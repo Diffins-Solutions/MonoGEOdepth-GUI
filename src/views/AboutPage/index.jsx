@@ -1,10 +1,13 @@
 import React from 'react';
+import Header from '../../components/Header';
+import styles from './index.module.css';
 
 const About = () => {
     return (
-        <div>
-            Hello from About
-        </div>
+        <>
+        <Header/>
+            <div className={styles['about-body']}>Hello from About</div>
+        </>
     );
 };
 

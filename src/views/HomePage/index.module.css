@@ -1,0 +1,36 @@
+body {
+  background-image: url('../../assets/images/background.png');
+}
+
+.home-body {
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  height: 20vw;
+  margin-top: 28vw;
+}
+
+.upload-btn {
+  background-color: white;
+  height: 45px;
+  width: 110px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-text {
+  font-size: 100px;
+}
+
+.btn-container {
+  padding-top: 8%;
+}

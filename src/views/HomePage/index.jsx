@@ -18,18 +18,24 @@ const Home = () => {
     setOpen(false);
   };
 
-    const handleChange = (file) => {
-      setFile(file);
-      axios.get(process.env.REACT_APP_API_URL + '/depthAPI')
+  const handleChange = (file) => {
+    setFile(file);
+
+    let form_data = new FormData();
+    form_data.append('image', file, file.name)
+    axios.post(process.env.REACT_APP_API_URL + '/depthAPI/getDepth', form_data, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
       .then(res => {
-        const data = res.data;
-        console.log(data);
-      }).catch(error => {
-        console.log(error);
-      });
-      console.log(file);
-    };
- 
+        console.log(res.data);
+      })
+      .catch(err => console.log(err))
+
+    console.log(file);
+  };
+
 
   return (
     <>
@@ -53,7 +59,7 @@ const Home = () => {
         <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">{'Upload your satallite image'}</DialogTitle>
           <DialogContent>
-          <FileUploader handleChange={handleChange} name="file" types={["JPG", "PNG"]} />
+            <FileUploader handleChange={handleChange} name="file" types={["JPG", "PNG"]} />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Submit</Button>

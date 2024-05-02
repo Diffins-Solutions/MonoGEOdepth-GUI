@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import styles from './index.module.css';
 import Header from '../../components/Header';
 import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
@@ -19,6 +20,13 @@ const Home = () => {
 
     const handleChange = (file) => {
       setFile(file);
+      axios.get(process.env.REACT_APP_API_URL + '/depthAPI')
+      .then(res => {
+        const data = res.data;
+        console.log(data);
+      }).catch(error => {
+        console.log(error);
+      });
       console.log(file);
     };
  

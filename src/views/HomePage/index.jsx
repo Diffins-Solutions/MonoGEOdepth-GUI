@@ -1,27 +1,32 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import styles from './index.module.css';
 import Header from '../../components/Header';
 import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import icon from '../../assets/images/black-hole.gif';
-import { FileUploader } from "react-drag-drop-files";
+import { FileUploader } from 'react-drag-drop-files';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    if (file != null) {
+      setOpen(false);
+      console.log(file);
+      navigate('/result', { state: { file: file } });
+    }
   };
 
-    const handleChange = (file) => {
-      setFile(file);
-      console.log(file);
-    };
- 
+  const handleChange = (file) => {
+    setFile(file);
+    console.log(file);
+  };
 
   return (
     <>
@@ -45,7 +50,7 @@ const Home = () => {
         <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
           <DialogTitle id="alert-dialog-title">{'Upload your satallite image'}</DialogTitle>
           <DialogContent>
-          <FileUploader handleChange={handleChange} name="file" types={["JPG", "PNG"]} />
+            <FileUploader handleChange={handleChange} name="file" types={['JPG', 'PNG']} />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Submit</Button>

@@ -4,14 +4,17 @@ import resultImage from '../../assets/images/result.png';
 import Header from '../../components/Header';
 import styles from './index.module.css';
 import { IoIosCloudDownload } from 'react-icons/io';
-import fileDownload from 'js-file-download';
 import ClipLoader from 'react-spinners/ClipLoader';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import { useNavigate } from 'react-router-dom';
 
 const Result = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
   let [color, setColor] = useState('#9b0b0b');
+  const navigate = useNavigate();
 
   //TODO: remove after backend integration
   function wait30SecondsPromise() {
@@ -33,6 +36,10 @@ const Result = () => {
     });
   }, []);
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   const handleDownload = () => {
     console.log(result);
     const link = document.createElement('a');
@@ -47,6 +54,11 @@ const Result = () => {
       <Header />
       <div className={styles['result-body']}>
         <div className={styles['result-image-box']}>
+          {!loading && (
+            <IconButton style={{ paddingRight: '30px', alignSelf: 'flex-end' }} onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          )}
           <ClipLoader color={color} loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
           {!loading && (
             <div className={styles['result-image-box']}>

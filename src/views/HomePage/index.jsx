@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import styles from './index.module.css';
 import Header from '../../components/Header';
 import { Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
@@ -25,8 +26,22 @@ const Home = () => {
 
   const handleChange = (file) => {
     setFile(file);
+
+    let form_data = new FormData();
+    form_data.append('image', file, file.name)
+    axios.post(process.env.REACT_APP_API_URL + '/depthAPI/getDepth', form_data, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    })
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => console.log(err))
+
     console.log(file);
   };
+
 
   return (
     <>

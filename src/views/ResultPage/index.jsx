@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import resultImage from '../../assets/images/result.png';
 import Header from '../../components/Header';
@@ -16,20 +17,19 @@ const Result = () => {
   let [color, setColor] = useState('#9b0b0b');
   const navigate = useNavigate();
 
-  //TODO: remove after backend integration
-  function wait30SecondsPromise() {
-    return new Promise((resolve) => {
-      setTimeout(resolve, 10000);
-    });
-  }
-
   useEffect(() => {
     const file = location.state?.file;
     console.log(file);
 
-    //TODO: axios post and then
-    wait30SecondsPromise().then(() => {
-      console.log('30 seconds have passed!');
+    let form_data = new FormData();
+    form_data.append('image', file, file.name)
+
+    axios.post(process.env.REACT_APP_API_URL + '/depthAPI/getDepth', form_data, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      }
+    }).then((res) => {
+      console.log(res.data);
       const resultI = resultImage;
       setResult(resultI);
       setLoading(false);
@@ -64,7 +64,7 @@ const Result = () => {
             <div className={styles['result-image-box']}>
               <img src={result} className={styles['image']} alt="Responsive image" />
               <div className={styles['middle']}>
-                <div class={styles['text']}>
+                <div className={styles['text']}>
                   <IoIosCloudDownload size={60} onClick={handleDownload} />
                 </div>
               </div>

@@ -28,10 +28,9 @@ const Result = () => {
       headers: {
         'content-type': 'multipart/form-data'
       }
-    }).then((res) => {
+    }).then(res => {
       console.log(res.data);
-      const resultI = resultImage;
-      setResult(resultI);
+      setResult(res.data.image);
       setLoading(false);
     });
   }, []);

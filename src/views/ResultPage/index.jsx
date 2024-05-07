@@ -14,11 +14,18 @@ const Result = () => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [result, setResult] = useState(null);
+  const [image, setImage] = useState(null);
   let [color, setColor] = useState('#9b0b0b');
   const navigate = useNavigate();
 
   useEffect(() => {
     const file = location.state?.file;
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result);
+    }
+
+    reader.readAsDataURL(file);
     console.log(file);
 
     let form_data = new FormData();
@@ -29,7 +36,6 @@ const Result = () => {
         'content-type': 'multipart/form-data'
       }
     }).then(res => {
-      console.log(res.data);
       setResult(res.data.image);
       setLoading(false);
     });
@@ -42,7 +48,7 @@ const Result = () => {
   const handleDownload = () => {
     console.log(result);
     const link = document.createElement('a');
-    link.href = result;
+    link.href = `data:image/jpeg;base64,${result}`;
     link.download = 'monoGEOdepth-result-depthmap.png';
     link.click();
 
@@ -54,21 +60,28 @@ const Result = () => {
       <div className={styles['result-body']}>
         <div className={styles['result-image-box']}>
           {!loading && (
-            <IconButton style={{ paddingRight: '30px', alignSelf: 'flex-end' }} onClick={handleClose}>
+            <IconButton style={{ paddingRight: '30px', paddingTop: '60px', alignSelf: 'flex-end' }} onClick={handleClose}>
               <CloseIcon />
             </IconButton>
           )}
-          <ClipLoader color={color} loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
-          {!loading && (
-            <div className={styles['result-image-box']}>
-              <img src={result} className={styles['image']} alt="Responsive image" />
-              <div className={styles['middle']}>
-                <div className={styles['text']}>
-                  <IoIosCloudDownload size={60} onClick={handleDownload} />
+          <div className={styles["image-viewer"]}>
+            <div className={styles['result-image']}>
+              <img src={image} className={styles['image']} alt="Responsive image" />
+            </div>
+            <ClipLoader color={color} loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
+            {!loading && (
+              <div className={styles['result-image']}>
+                <img src={`data:image/jpeg;base64,${result}`} className={styles['image']} alt="Responsive image" />
+                <div className={styles['middle']}>
+                  <div className={styles['text']}>
+                    <IoIosCloudDownload size={60} onClick={handleDownload} />
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+
+          </div>
+
         </div>
       </div>
     </>

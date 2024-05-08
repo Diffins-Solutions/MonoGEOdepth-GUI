@@ -16,7 +16,8 @@
 }
 
 .image {
-  height: 100%;
+  height: 512px;
+  padding-left: 90px;
 }
 
 .middle {
@@ -45,9 +46,11 @@
 
 .image-viewer{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .result-image{
-  padding-left: 90px;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }

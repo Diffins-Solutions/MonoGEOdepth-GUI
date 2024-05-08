@@ -30,6 +30,7 @@ const Result = () => {
 
     let form_data = new FormData();
     form_data.append('image', file, file.name)
+    form_data.append('is_gpu', false)
 
     axios.post(process.env.REACT_APP_API_URL + '/depthAPI/getDepth', form_data, {
       headers: {
@@ -59,18 +60,19 @@ const Result = () => {
       <Header />
       <div className={styles['result-body']}>
         <div className={styles['result-image-box']}>
-          {!loading && (
             <IconButton style={{ paddingRight: '30px', paddingTop: '60px', alignSelf: 'flex-end' }} onClick={handleClose}>
               <CloseIcon />
             </IconButton>
-          )}
           <div className={styles["image-viewer"]}>
             <div className={styles['result-image']}>
               <img src={image} className={styles['image']} alt="Responsive image" />
-            </div>
-            <ClipLoader color={color} loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
-            {!loading && (
-              <div className={styles['result-image']}>
+              {loading ? (
+                <div  className={styles['middle']}>
+                  <ClipLoader color={color} loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
+                </div>
+                
+              ) : (
+              <div>
                 <img src={`data:image/jpeg;base64,${result}`} className={styles['image']} alt="Responsive image" />
                 <div className={styles['middle']}>
                   <div className={styles['text']}>
@@ -78,7 +80,8 @@ const Result = () => {
                   </div>
                 </div>
               </div>
-            )}
+                  )}  
+            </div>
 
           </div>
 
